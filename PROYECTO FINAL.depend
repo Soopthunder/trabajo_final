@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1622756215 source:c:\users\lucas\desktop\utn\programacion\trabajo practico final\proyecto final\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<strings.h>
+
