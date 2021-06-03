@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <strings.h>
+#include <stdbool.h>
 
 
 
