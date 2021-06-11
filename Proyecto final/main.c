@@ -6,7 +6,6 @@
 
 
 
-
 ///Estructura de Usuario
 
 typedef struct{
@@ -48,7 +47,7 @@ typedef struct{
     char mensaje[300];
     int leido;                      // 1:si 0:no
 } stMensajeria;
-
+void tituloProyecto();
 void menuIngresar();
 void escribirArchivoUsuario(stUsuario aux, char archivo[]);
 void formularioUsuario(char archivo[]);
@@ -59,7 +58,11 @@ void muestraUsuarioArchivo(char archivo[]);
 
 
 
+
+
 int main(){
+    tituloProyecto();
+
 
     menuIngresar();
 
@@ -189,7 +192,6 @@ void cargaUsuario(char archivo[]){
 
     }
 }
-
 void muestraUnUsuario(stUsuario aux){
     printf("\n  -----------------------------------------------------------------");
     printf("\n  ID                      : %d", aux.idUsuario);
@@ -200,9 +202,48 @@ void muestraUnUsuario(stUsuario aux){
     printf("\n  Email                   : %s", aux.mail);
     printf("\n  Genero                  : %c", aux.genero);
     printf("\n  Baja s/n                : %d\n", aux.activo);
+       printf("\n  -----------------------------------------------------------------");
+
+}
+void muestraUsuarioArchivo(char archivo[]){
+    ///EL MENU PRINCIPAL MOSTRARA TODO EL FUNCIONAMIENTO DE LA APP.
+    /// Eliminar por id.
+    /// Mostrar contenido random.
+    ///
+    ///
+
+
+
+
+void tituloProyecto()
+{
+
+	printf("\n     ======================================================================\n");
+	printf("\t\t\t     PROYECTO FINAL \n");
+	printf("\t   CREA TU POST, BUSCALO, EDITALO, ELIMINALO Y DISFRUTALO\n");
+	printf("\t\t    freeTime - Alumnos: Jonathan Cardozo, Melisa Zalazar, Lucas Glavina\n");
+	printf("     ======================================================================\n");
+
+
+	printf("\n");
+	int numrep= 80;
+	char car= '_';
+	while(numrep>0){
+        printf("%c",car);
+        --numrep;
+	}
+
+
 }
 
-void muestraUsuarioArchivo(char archivo[]){
+
+
+
+
+
+
+
+
     stUsuario aux;
     FILE * bufferArchivo = NULL;
     bufferArchivo = fopen(archivo,"rb");
