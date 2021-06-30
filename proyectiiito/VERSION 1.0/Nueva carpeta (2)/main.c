@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
-#define contenido_dat "contenido.dat"
-#define usuarios_dat  "usuarios.dat"
-#define mensajes_dat "mensajes.dat"
+#define CONTENIDO_DAT "contenido.dat"
+#define USUARIOS_DAT  "usuarios.dat"
+#define MENSAJES_DAT "mensajes.dat"
 
 ///Estructura de Usuario
 
@@ -26,6 +26,10 @@ typedef struct{
 } stUsuario;
 
 
+
+
+
+
 ///Estructura de Contenido
 
 typedef struct{
@@ -35,17 +39,13 @@ typedef struct{
     char categoria[30];
     int likes;
     int puntosPorCompartir;
-    int activo;                     // indica 1 o 0 si el contenido está activo
+    int activo;
+                    // indica 1 o 0 si el contenido está activo
 } stContenido;
 
-///Estructura de Categorias
 
-typedef struct
-{
-    int id;
-    char nombreCat[30];
 
-} stCategoria;
+
 
 ///OPCIONAL
 ///Estructura de Mensajería
@@ -59,7 +59,6 @@ typedef struct{
     stContenido conten;                  // 1:si 0:no
 } stMensajeria;
 ///
-
 void tituloProyecto();
 void menuPrincipal();
 void usuarioInicio();
@@ -71,12 +70,6 @@ int buscaUltimoIdUsuario(char archivo[]);
 ///contenido
 int buscaUltimoIdContenido(char archivo[]);
 int creaContenido(char archivo[]);
-stUsuario actualizarArregloContenido(char archivo[], stUsuario usuario, int idContenido);
-///Mensajeria
-stContenido buscaContenidoPorID(char archivo[],int id);
-void enviarContenido(stUsuario emisor, const char* usernameDelDestinatario, int idDeContenido);
-void VerMensajes(stMensajeria mensajes);
-///
 
 int main(){
     menuPrincipal();
@@ -128,22 +121,22 @@ void menuPrincipal(){
             break;
         case 2:
             printf("En construccion");
-            break;
         case 3:
             printf("SOLO MUESTRA EL ARCHIVO usuario\n");
             muestraUsuarioArchivo("usuarios.dat");
-            break;
         case 4:
             printf("solo muestra archivo contenido\n");
             muestraContenidoArchivo("contenidos.dat");
-            break;
+
+
+
         }
 
         printf("\nDesea continuar en el programa? s/n\n ");
         fflush(stdin);
         control= getch();
 
-     }while(control == 's');
+     }while(control = 's');
 
 
  }
@@ -162,19 +155,23 @@ void menuPrincipal(){
         case 1:
             system("cls");
             logueoUsuario("usuarios.dat");
+
             break;
+
         case 2:
             system("cls");
             creaUserName("usuarios.dat");
-            printf("\Desea continuar en el programa? (s/n)\n ");
-            fflush(stdin);
-            control= getch();
-            break;
+
+
         }
-    }while(control == 's');
+        printf("\Desea continuar en el programa? s/n\n ");
+        fflush(stdin);
+        control= getch();
+    }while(control = 's');
 
 
  }
+
 
  void logueoUsuario(char archivo[]){
     stUsuario usuario;
@@ -241,7 +238,6 @@ stUsuario buscaUserPorUserName(char archivo[], char userName[]){
      return aux;
 
 }
-
 int existeUserPorUserName(char archivo[], char userName[]){
     stUsuario aux;
     int flag = 0;
@@ -267,13 +263,29 @@ int existeUserPorUserName(char archivo[], char userName[]){
 
 }
 
+
 void creaUserName(char archivo[]){
 
     stUsuario aux;
     char user[20];
     int existe;
 
-    formularioUsuario(archivo);
+    printf("Ingrese el UserName\n");
+    fflush(stdin);
+    gets(user);
+
+//    existe = buscaIgualString(archivo, user);
+
+    if(existe == 1){
+
+        printf("ese username ya esta en uso\n");
+
+
+    }
+    else{
+        formularioUsuario(archivo);
+
+    }
 }
 
 void formularioUsuario(char archivo[]){
@@ -285,60 +297,58 @@ void formularioUsuario(char archivo[]){
 
     if(bufferArchivo != NULL){
 
+        printf("Completar todos los campos obligatorios\n\n");
+        printf("==> Nombre: ");
+        fflush(stdin);
+        gets(aux.nombre);
+
+        printf("==> Apellido: ");
+        fflush(stdin);
+        gets(aux.apellido);
+
         printf("==> userName: ");
         fflush(stdin);
         gets(aux.userName);
-        int existeUserName = existeUserPorUserName("usuarios.dat", aux.userName);
-        if(existeUserName == 0) {
-            printf("Completar todos los campos obligatorios\n\n");
-            printf("==> Nombre: ");
-            fflush(stdin);
-            gets(aux.nombre);
 
-            printf("==> Apellido: ");
-            fflush(stdin);
-            gets(aux.apellido);
-
-            printf("==> password solo se aceptan letras, como maximo 20: ");
-            fflush(stdin);
-            gets(aux.password);
+        printf("==> password solo se aceptan letras, como maximo 20: ");
+        fflush(stdin);
+        gets(aux.password);
 
 
-            printf("==> mail: ");
-            fflush(stdin);
-            gets(aux.mail);
+        printf("==> mail: ");
+        fflush(stdin);
+        gets(aux.mail);
 
-            printf("==> genero: ");
-            fflush(stdin);
-            scanf("%c", &aux.genero);
+        printf("==> genero: ");
+        fflush(stdin);
+        scanf("%c", &aux.genero);
 
-            printf("==> Gracias por registrarse\n");
-
-
-            aux.activo = 0; ///0 para activos, 1 para inactivos
-            aux.rol = 0; /// 0 porque es usuario
-            aux.puntaje = 0;///inicio del puntaje
-            aux.nivel = 0;
-            aux.validosContenidos = 0;
-            aux.listadoIdsContenidosGuardados[50];
-
-            id++;
-            aux.idUsuario = id;
+        printf("==> Gracias por registrarse\n");
 
 
-            fwrite(&aux, sizeof(stUsuario), 1, bufferArchivo);
-        } else {
-            printf("El usuario con el username %s ya existe, vuelva a intentarlo \n", aux.userName);
-        }
+        aux.activo = 0; ///0 para activos, 1 para inactivos
+        aux.rol = 0; /// 0 porque es usuario
+        aux.puntaje = 0;///inicio del puntaje
+        aux.nivel = 0;
 
-        printf ("cualquier tecla para continuar");
+
+
+        id++;
+        aux.idUsuario = id;
+
+
+        fwrite(&aux, sizeof(stUsuario), 1, bufferArchivo);
+
+        printf ( " cualquier tecla para continuar " );
         opcion = getch ();
-        system ("cls");
+        system ( " cls " );
+
+
         fclose(bufferArchivo);
+
     }
 
 }
-
 int buscaUltimoIdUsuario(char archivo[]){
     stUsuario aux;
     int id = 0;
@@ -350,13 +360,12 @@ int buscaUltimoIdUsuario(char archivo[]){
         fseek(bufferArchivo,-1 * sizeof(stUsuario),SEEK_END);
 
         if(fread(&aux, sizeof(stUsuario),1,bufferArchivo) > 0){
-    id = aux.idUsuario;
-}
+            id = aux.idUsuario;
+        }
         fclose(bufferArchivo);
     }
     return id;
 }
-
 void menuUsuario(char archivo[], stUsuario usuario){
 
     stUsuario usuarioActualizado;
@@ -366,12 +375,12 @@ void menuUsuario(char archivo[], stUsuario usuario){
     int existe;
     int idContenido;
 
-    do {
+    do{
         printf("Inicio de sesion correcto\n");
         printf("Que desea hacer?\n");
-        printf("1) Modificar\n");//ya esta
-        printf("2) Crear Contenido\n");//ya esta
-        printf("3) Ver contenido\n");//ya esta
+        printf("1) Modificar\n");
+        printf("2) Crear Contenido\n");
+        printf("3) Ver contenido\n");
         printf("4) crear mensajes\n");
         printf("5) Ver mensajes\n");
         printf("6) Ver mi perfil\n");//ya esta
@@ -382,48 +391,37 @@ void menuUsuario(char archivo[], stUsuario usuario){
         case 1:
             system("cls");
             usuario = modificaRegistro("usuarios.dat", usuario.userName);
-            printf("\Desea continuar en el programa? s/n\n ");
-            fflush(stdin);
-            control= getch();
             break;
         case 2:
             system("cls");
             idContenido = creaContenido("contenidos.dat");
-            usuario = actualizarArregloContenido("usuarios.dat", usuario, idContenido);
-            printf("\Desea continuar en el programa? s/n\n ");
-            fflush(stdin);
-            control= getch();
-            break;
+            //usuario = actualizarArregloContenido(usuario, idContenido);
         case 3:
-            system("cls");
-            printf("Ver contenido \n");
-            printf("Contenidos: %d \n", usuario.validosContenidos);
+            printf("Ver contenido");
 
-            muestraTodosLosContenidoDeUnUsuario("contenidos.dat", usuario);
 
-            printf("\Desea continuar en el programa? s/n\n ");
-            fflush(stdin);
-            control= getch();
-            break;
+
         case 6:
             system("cls");
             printf("Mi perfil:");
             muestraUnUsuario(usuario);
             break;
-        case 7:
-            control = 'n';
-            break;
-        default:
-            printf("La opcion no existe");
-            break;
+
+
+
+
+
+
 
         }
-    }while(control == 's');
+        printf("\Desea continuar en el programa? s/n\n ");
+        fflush(stdin);
+        control= getch();
+    }while(control = 's');
 
 
 
 }
-
 stUsuario modificaRegistro(char archivo[], char user[]){
     char control = 's', modif = 's';
     int menu;
@@ -636,7 +634,6 @@ int menuModificaUsuario(){
 
     return control;
 }
-
 void muestraUnUsuario(stUsuario aux){
 
     printf("\n  -----------------------------------------------------------------");
@@ -649,7 +646,6 @@ void muestraUnUsuario(stUsuario aux){
     printf("\n  Genero                  : %c", aux.genero);
     printf("\n  Puntaje                 : %d", aux.puntaje);
     printf("\n  Nivel                   : %d", aux.nivel);
-    printf("\n  Cantidad de contenidos  : %d", aux.validosContenidos);
     printf("\n  Rol                     : %d", aux.rol);
     printf("\n  Baja s/n                : %d\n", aux.activo);
 }
@@ -660,8 +656,13 @@ void muestraUsuarioArchivo(char archivo[]){
 
     if(bufferArchivo!=NULL){
 
-        while(fread(&aux, sizeof(stUsuario), 1, bufferArchivo) > 0){
-            muestraUnUsuario(aux);
+        while(!feof(bufferArchivo)){
+
+            fread(&aux, sizeof(stUsuario), 1, bufferArchivo);
+
+            if(!feof(bufferArchivo)){
+               muestraUnUsuario(aux);
+            }
         }
 
         fclose(bufferArchivo);
@@ -671,7 +672,6 @@ void muestraUsuarioArchivo(char archivo[]){
     }
 
 }
-
 ///encontre la solucion al problema estaba enviando mal el argumento user
 int buscaPosicionUser(char archivo[], char user[]){
     int pos = 0;
@@ -699,9 +699,6 @@ int buscaPosicionUser(char archivo[], char user[]){
     return pos;
 }
 
-///-/////////////////////////////////////////////////
-///-//////////////contenido/////////////////////////
-///-/////////////////////////////////////////////////
 
 int creaContenido(char archivo[]){
     stContenido contenido;
@@ -730,9 +727,6 @@ int creaContenido(char archivo[]){
 
         id++;
         contenido.idContenido = id;
-        contenido.likes = 0;
-        contenido.puntosPorCompartir = 0;
-        contenido.activo = 1;
 
 
         fwrite(&contenido, sizeof(stContenido), 1, bufferArchivo);
@@ -749,7 +743,6 @@ int creaContenido(char archivo[]){
     return id;
 
 }
-
 int buscaUltimoIdContenido(char archivo[]){
     stContenido contenido;
     int id = 0;
@@ -767,7 +760,6 @@ int buscaUltimoIdContenido(char archivo[]){
     }
     return id;
 }
-
 void muestraUnContenido(stContenido contenido){
 
     printf("\n  -----------------------------------------------------------------");
@@ -775,41 +767,21 @@ void muestraUnContenido(stContenido contenido){
     printf("\n  Titulo                  : %s", contenido.titulo);
     printf("\n  Descripcion             : %s", contenido.descripcion);
     printf("\n  Categoria               : %s", contenido.categoria);
-    printf("\n  Likes                   : %d", contenido.likes);
-    printf("\n  Puntos Por Compartir    : %d", contenido.puntosPorCompartir);
-    printf("\n  Activos                 : %d", contenido.activo);
-    printf("\n  -----------------------------------------------------------------\n");
+
 }
-
-void muestraTodosLosContenidoDeUnUsuario(char archivoContenido[], stUsuario usuario){
-    stContenido contenido;
-
-    FILE * bufferArchivo = fopen(archivoContenido,"rb");
-
-    if(bufferArchivo!=NULL){
-        while(fread(&contenido, sizeof(stContenido),1, bufferArchivo) > 0 ){
-            printf("Id contenido: %d \n", contenido.idContenido);
-
-            for(int i = 0; i < usuario.validosContenidos; i++){
-                if(usuario.listadoIdsContenidosGuardados[i] == contenido.idContenido){
-                   muestraUnContenido(contenido);
-                }
-            }
-        }
-        fclose(bufferArchivo);
-    }else{
-        printf("\nERROR DE APERTURA DE ARCHIVO ");
-    }
-}
-
 void muestraContenidoArchivo(char archivo[]){
     stContenido contenido;
     FILE * bufferArchivo = fopen(archivo,"rb");
 
     if(bufferArchivo!=NULL){
 
-        while(fread(&contenido, sizeof(stContenido), 1, bufferArchivo) > 0){
-           muestraUnContenido(contenido);
+        while(!feof(bufferArchivo)){
+
+            fread(&contenido, sizeof(stContenido), 1, bufferArchivo);
+
+            if(!feof(bufferArchivo)){
+               muestraUnContenido(contenido);
+            }
         }
 
         fclose(bufferArchivo);
@@ -819,38 +791,13 @@ void muestraContenidoArchivo(char archivo[]){
     }
 
 }
+int actualizarArregloContenido(stUsuario usuario, int idContenido){
 
-stUsuario actualizarArregloContenido(char archivo[], stUsuario usuario, int idContenido){
-    int pos;
 
-    FILE * bufferArchivo = fopen(archivo, "r+b");
-    if(bufferArchivo){
 
-        pos = buscaPosicionUser(archivo, usuario.userName);
 
-        fseek(bufferArchivo, sizeof(stUsuario) * pos, SEEK_SET);
 
-        usuario.listadoIdsContenidosGuardados[usuario.validosContenidos] = idContenido;
-        usuario.validosContenidos++;
-        usuario.puntaje = usuario.puntaje + 10;
-        if(usuario.puntaje % 30 == 0){
-            usuario.nivel++;
-        }
-
-        fseek(bufferArchivo, (-1) * sizeof(stUsuario), SEEK_CUR);
-        int update = fwrite(&usuario, sizeof(stUsuario), 1, bufferArchivo);
-    }
-    fclose(bufferArchivo);
-
-    return usuario;
 }
-
-
-
-///-/////////////////////////////////////////////////
-///-//////////////mensajeria/////////////////////////
-///-/////////////////////////////////////////////////
-
 
 
 stContenido buscaContenidoPorID(char archivo[],int id)
@@ -880,21 +827,22 @@ stContenido buscaContenidoPorID(char archivo[],int id)
 
 }
 
-void enviarContenido(stUsuario emisor, const char* usernameDelDestinatario, int idDeContenido)
+
+void enviarContenido(stUsuario emisor, const char* usernameDelDestinatario, int idDeContenido, MENSAJES_DAT, USUARIOS_DAT, CONTENIDO_DAT)
 {
     stMensajeria mensajeria;
 
-    FILE* archivoDeMensajes = fopen(mensajes_dat, "ab");
-    FILE* archivoDeUsuario = fopen(usuarios_dat, "rb");
+    FILE* archivoDeMensajes = fopen(MENSAJES_DAT, "ab");
+    FILE* archivoDeUsuario = fopen(USUARIOS_DAT, "rb");
 
 
     mensajeria.idUsuarioEmisor = emisor.idUsuario;
 
-    stUsuario destinatario = buscaUserPorUserName(usuarios_dat,usernameDelDestinatario);
+    stUsuario destinatario = buscaUserPorUserName(usuarioArchivo,usernameDelDestinatario);
 
     mensajeria.idUsuarioReceptor = destinatario.idUsuario;
 
-    stContenido contenido = buscaContenidoPorID(contenido_dat,idDeContenido);
+    stContenido contenido = buscaContenidoPorID(CONTENIDO_DAT,idDeContenido);
     mensajeria.conten = contenido;
     mensajeria.idContenidoEnviado = contenido.idContenido;
     mensajeria.leido = 0;
@@ -917,6 +865,9 @@ void enviarContenido(stUsuario emisor, const char* usernameDelDestinatario, int 
     fclose(archivoDeMensajes);
 }
 
+
+
+
 void VerMensajes(stMensajeria mensajes)
 {
     printf("\n\n  -----------------------------------------------------------------");
@@ -932,117 +883,5 @@ void VerMensajes(stMensajeria mensajes)
 }
 
 
-///-/////////////////////////////////////////////////////////////////////
-///-////////////////////CATEGORIAS///////////////////////////////////////
-///-/////////////////////////////////////////////////////////////////////
 
-void crearCategoria (char archivo[])
-{
-    stCategoria a;
-    FILE*archi;
-    char letra='s';
-    int i=ultimoId(archivo);
-    archi=fopen(archivo, "ab" );
-    if (archi!=NULL)
-    {
-        while(letra=='s')
-        {
-            printf("\n");
-            puts("------------------------------------------------");
-            printf("ingrese nombre de la categoria a agregar: ");
-            fflush(stdin);
-            scanf("%s", &a.nombreCat);
-            puts("------------------------------------------------");
-            i++;
-            a.id=i;
-            fwrite(&a, sizeof(stCategoria), 1, archi);
-            printf("Desea seguir cargando categorias?(s/n)");
-            fflush(stdin);
-            scanf("%c", &letra);
 
-        }
-        fclose(archi);
-    }
-}
-void mostrarCategorias(char archivo[])
-{
-    stCategoria a;
-    FILE*pArchi = fopen(archivo, "rb");
-    if (pArchi)
-    {
-        while(fread(&a, sizeof(stCategoria), 1, pArchi)>0)
-        {
-            mostrarUnaCategoria(a);
-        }
-        fclose(pArchi);
-    }
-
-}
-void mostrarUnaCategoria(stCategoria a)
-{
-    printf("\nNombre de la categoria..................:%s (id: %d)", a.nombreCat, a.id);
-}
-int ultimoId(char archivo[])
-{
-    FILE *archi  = fopen( archivo, "r+b");
-    stCategoria a;
-    int ultimoId=0;
-    if(archi)
-    {
-        fseek(archi, -1*sizeof(stCategoria), SEEK_END);
-        if (fread(&a, sizeof(stCategoria), 1, archi)>0)
-        {
-            ultimoId=a.id;
-        }
-        fclose(archi);
-    }
-    return ultimoId;
-}
-
-void cargarArregloDeCategorias(char archivo[], stCategoria arregloCategorias[], int validos){
-    stCategoria a;
-    FILE *archi = fopen(archivo, "rb");
-    if (archi){
-        int i=0;
-        while(fread(&a, sizeof(stCategoria), 1, archi)>0 && i<validos )
-        {
-            arregloCategorias[i]=a;
-            i++;
-        }
-        fclose(archi);
-    }
-
-}
-
-void mostrarArreglo (stCategoria arregloCategorias[], int validos){
-    int i=0;
-    for (i=0; i<validos; i++ ){
-        mostrarUnaCategoria(arregloCategorias[i]);
-    }
-}
-
-int cantidadDatosStCategorias(char archivo[]){
-     stCategoria a;
-     int i=0;
-    FILE *archi = fopen(archivo, "rb");
-    if (archi){
-        while(fread(&a, sizeof(stCategoria), 1, archi)>0)
-        {
-            i++;
-        }
-        fclose(archi);
-    }
-return i;
-}
-
-void updateArregloAarchivo(stCategoria arregloCategorias[], int validos, char archivo[]){
-    FILE * archi=fopen(archivo, "wb");
-    if(archi){
-        int i=0;
-        for (i=0; i<validos; i++){
-            fwrite(&arregloCategorias[i], sizeof(stCategoria), 1, archi);
-        }
-        fclose(archi);
-    }
-
-}

@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1624869901 source:c:\users\zalazar\onedrive\documentos\utn\programacion\parciales\nuevofinal\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+
