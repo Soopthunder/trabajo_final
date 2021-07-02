@@ -1459,7 +1459,7 @@ void enviarContenido(stUsuario emisor, char usernameDelDestinatario[], int idDeC
 
     mensajeria.idContenidoEnviado = contenido.idContenido;
     mensajeria.leido = 0;
-
+    emisor.puntaje = emisor.puntaje + 15;
 
     /// función crear mensaje
     strcpy(mensajeria.conten.titulo, contenido.titulo);
@@ -1472,6 +1472,7 @@ void enviarContenido(stUsuario emisor, char usernameDelDestinatario[], int idDeC
 
     /// guardar mensajeria en archivoDeMensajes
 
+    fwrite(&emisor, sizeof(stUsuario), 1, archivoDeUsuario);
     int result = fwrite(&mensajeria, sizeof(stMensajeria), 1, archivoDeMensajes);
 
     if (result != 1)
